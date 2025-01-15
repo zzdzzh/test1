@@ -9,7 +9,7 @@
 	<a href="https://gitee.com/y_project/RuoYi-Cloud/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 
-分说
+
 
 ## 平台简介
 
