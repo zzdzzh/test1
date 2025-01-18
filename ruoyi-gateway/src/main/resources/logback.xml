@@ -71,4 +71,6 @@
         <appender-ref ref="file_info" />
         <appender-ref ref="file_error" />
     </root>
+
+    <!-- <logger name="org.springframework.cloud.gateway" level="DEBUG"/> -->
 </configuration>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.device.mapper.DeviceMapper">
+    
+    <resultMap type="Device" id="DeviceResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="secret" column="secret"/>
+        <result property="sn" column="sn"/>
+        <result property="iccid" column="iccid"/>
+        <result property="parentSn" column="parent_sn"/>
+        <result property="category" column="category"/>
+        <result property="groupId" column="group_id"/>
+        <result property="strategyId" column="strategy_id"/>
+        <result property="status" column="status"/>
+        <result property="terminal" column="terminal"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectDeviceVo">
+        select id, name, code, secret, sn, iccid, parent_sn, category, group_id, strategy_id, status, terminal, create_time, update_time, remark 
+        from device
+    </sql>
+
+    <!-- 查询设备列表 -->
+    <select id="selectDeviceList" parameterType="Device" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        <where>
+            <if test="name != null and name != ''">
+                AND name like concat('%', #{name}, '%')
+            </if>
+            <if test="code != null and code != ''">
+                AND code = #{code}
+            </if>
+            <if test="sn != null and sn != ''">
+                AND sn = #{sn}
+            </if>
+            <if test="iccid != null and iccid != ''">
+                AND iccid = #{iccid}
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+            <if test="groupId != null">
+                AND group_id = #{groupId}
+            </if>
+            <if test="strategyId != null">
+                AND strategy_id = #{strategyId}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="terminal != null">
+                AND terminal = #{terminal}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <!-- 查询单个设备 -->
+    <select id="selectDeviceById" parameterType="Long" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        where id = #{id}
+    </select>
+    
+    <!-- 新增设备 -->
+    <insert id="insertDevice" parameterType="Device">
+        insert into device (
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="code != null and code != ''">code,</if>
+            <if test="secret != null">secret,</if>
+            <if test="sn != null">sn,</if>
+            <if test="iccid != null">iccid,</if>
+            <if test="parentSn != null">parent_sn,</if>
+            <if test="category != null">category,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="strategyId != null">strategy_id,</if>
+            <if test="status != null">status,</if>
+            <if test="terminal != null">terminal,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        ) values (
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="secret != null">#{secret},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="iccid != null">#{iccid},</if>
+            <if test="parentSn != null">#{parentSn},</if>
+            <if test="category != null">#{category},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="strategyId != null">#{strategyId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="terminal != null">#{terminal},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        )
+    </insert>
+    
+    <!-- 修改设备 -->
+    <update id="updateDevice" parameterType="Device">
+        update device
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="secret != null">secret = #{secret},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="iccid != null">iccid = #{iccid},</if>
+            <if test="parentSn != null">parent_sn = #{parentSn},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="strategyId != null">strategy_id = #{strategyId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="terminal != null">terminal = #{terminal},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+    
+    <!-- 删除设备 -->
+    <delete id="deleteDeviceById" parameterType="Long">
+        delete from device where id = #{id}
+    </delete>
+    
+    <!-- 批量删除设备 -->
+    <delete id="deleteDeviceByIds" parameterType="Long">
+        delete from device where id in 
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper> 
