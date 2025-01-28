@@ -11,7 +11,10 @@ start "ruoyi-auth" %~dp0start-auth.bat
 echo [INFO] 3. Starting System Service
 start "ruoyi-system" %~dp0start-system.bat
 
-echo [INFO] 4. Starting UI Service
+echo [INFO] 4. Starting device Service
+start "ruoyi-device" %~dp0start-device.bat
+
+echo [INFO] 5. Starting UI Service
 start "ruoyi-ui" %~dp0start-ui.bat
 
 echo.

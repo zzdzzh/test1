@@ -20,7 +20,7 @@ export function listDevices(params) {
  */
 export function getDevice(id) {
   return request({
-    url: `/device/${id}`,
+    url: `/device/device/${id}`,
     method: 'get'
   });
 }
@@ -32,7 +32,7 @@ export function getDevice(id) {
  */
 export function addDevice(data) {
   return request({
-    url: '/device',
+    url: '/device/device',
     method: 'post',
     data: data
   });
@@ -45,7 +45,7 @@ export function addDevice(data) {
  */
 export function updateDevice(data) {
   return request({
-    url: '/device',
+    url: '/device/device',
     method: 'put',
     data: data
   });
@@ -58,7 +58,7 @@ export function updateDevice(data) {
  */
 export function deleteDevice(id) {
   return request({
-    url: `/device/${id}`,
+    url: `/device/device/${id}`,
     method: 'delete'
   });
 }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.device.mapper.CustomerServiceTicketMapper">
+    
+    <resultMap type="com.ruoyi.device.domain.CustomerServiceTicket" id="CustomerServiceTicketResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="phone"    column="phone"    />
+        <result property="content"    column="content"    />
+        <result property="consultType"    column="consult_type"    />
+        <result property="relatedOrders"    column="related_orders"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCustomerServiceTicketVo">
+        select id, name, phone, content, consult_type, related_orders, status, create_time, update_time 
+        from customer_service_tickets
+    </sql>
+
+    <select id="selectCustomerServiceTicketList" parameterType="CustomerServiceTicket" resultMap="CustomerServiceTicketResult">
+        <include refid="selectCustomerServiceTicketVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+            <if test="consultType != null"> and consult_type = #{consultType}</if>
+            <if test="relatedOrders != null  and relatedOrders != ''"> and related_orders like concat('%', #{relatedOrders}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectCustomerServiceTicketById" parameterType="Long" resultMap="CustomerServiceTicketResult">
+        <include refid="selectCustomerServiceTicketVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCustomerServiceTicket" parameterType="CustomerServiceTicket" useGeneratedKeys="true" keyProperty="id">
+        insert into customer_service_tickets
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="phone != null">phone,</if>
+            <if test="content != null">content,</if>
+            <if test="consultType != null">consult_type,</if>
+            <if test="relatedOrders != null">related_orders,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="content != null">#{content},</if>
+            <if test="consultType != null">#{consultType},</if>
+            <if test="relatedOrders != null">#{relatedOrders},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCustomerServiceTicket" parameterType="CustomerServiceTicket">
+        update customer_service_tickets
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="consultType != null">consult_type = #{consultType},</if>
+            <if test="relatedOrders != null">related_orders = #{relatedOrders},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCustomerServiceTicketById" parameterType="Long">
+        delete from customer_service_tickets where id = #{id}
+    </delete>
+
+    <delete id="deleteCustomerServiceTicketByIds" parameterType="String">
+        delete from customer_service_tickets where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper> 

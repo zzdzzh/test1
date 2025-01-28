@@ -69,9 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 新增设备 -->
-    <insert id="insertDevice" parameterType="Device">
+    <insert id="insertDevice" parameterType="Device" useGeneratedKeys="true" keyProperty="id">
         insert into device (
-            <if test="id != null">id,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="code != null and code != ''">code,</if>
             <if test="secret != null">secret,</if>
@@ -86,7 +85,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remark != null">remark,</if>
             create_time
         ) values (
-            <if test="id != null">#{id},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="code != null and code != ''">#{code},</if>
             <if test="secret != null">#{secret},</if>

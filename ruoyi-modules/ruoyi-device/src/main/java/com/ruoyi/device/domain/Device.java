@@ -6,12 +6,14 @@ import com.ruoyi.common.core.web.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
 
 /**
  * 设备对象 device
  * 
  * @author ruoyi
  */
+@Data
 public class Device extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

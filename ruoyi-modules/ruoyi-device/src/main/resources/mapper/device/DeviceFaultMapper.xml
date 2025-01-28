@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.device.mapper.DeviceFaultMapper">
+    
+    <resultMap type="DeviceFault" id="DeviceFaultResult">
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceCode"    column="device_code"    />
+        <result property="nodeCode"      column="node_code"      />
+        <result property="alarmInfo"     column="alarm_info"     />
+        <result property="alarmTime"     column="alarm_time"     />
+        <result property="groupName"     column="group_name"     />
+        <result property="category"      column="category"       />
+        <result property="status"        column="status"         />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectDeviceFaultVo">
+        SELECT d.name as device_name, d.code as device_code, 
+               dl.target as node_code, dl.status as alarm_info,
+               dl.log_time as alarm_time, dg.name as group_name,
+               d.category, dl.status, dl.create_time
+        FROM device_log dl
+        LEFT JOIN device d ON dl.device_id = d.id
+        LEFT JOIN device_group dg ON d.group_id = dg.id
+    </sql>
+
+    <select id="selectDeviceFaultList" parameterType="DeviceFault" resultMap="DeviceFaultResult">
+        <include refid="selectDeviceFaultVo"/>
+        <where>
+            <if test="deviceName != null and deviceName != ''">
+                AND d.name like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceCode != null and deviceCode != ''">
+                AND d.code = #{deviceCode}
+            </if>
+            <if test="status != null and status != ''">
+                AND dl.status = #{status}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                AND dg.name = #{groupName}
+            </if>
+        </where>
+        ORDER BY dl.log_time DESC
+    </select>
+
+    <select id="selectDeviceFaultById" parameterType="Long" resultMap="DeviceFaultResult">
+        <include refid="selectDeviceFaultVo"/>
+        where dl.id = #{id}
+    </select>
+
+    <insert id="insertDeviceFault" parameterType="DeviceFault">
+        INSERT INTO device_log (
+            device_id, device_code, target, status, 
+            log_time, create_time
+        ) VALUES (
+            (SELECT id FROM device WHERE code = #{deviceCode}),
+            #{deviceCode}, #{nodeCode}, #{alarmInfo},
+            #{alarmTime}, sysdate()
+        )
+    </insert>
+
+    <update id="updateDeviceFault" parameterType="DeviceFault">
+        UPDATE device_log
+        <set>
+            <if test="status != null">status = #{status},</if>
+            update_time = sysdate()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteDeviceFaultById" parameterType="Long">
+        DELETE FROM device_log WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteDeviceFaultByIds" parameterType="Long">
+        DELETE FROM device_log WHERE id IN 
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper> 

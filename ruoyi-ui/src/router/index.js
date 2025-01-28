@@ -150,7 +150,7 @@ export const dynamicRoutes = [
   },
   {
     path: '/tool/gen-edit',
-    component: Layout,
+    component:  Layout,
     hidden: true,
     permissions: ['tool:gen:edit'],
     children: [
