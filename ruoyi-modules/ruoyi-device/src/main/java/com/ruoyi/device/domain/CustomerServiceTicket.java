@@ -39,6 +39,10 @@ public class CustomerServiceTicket extends BaseEntity
     @Excel(name = "工单状态", readConverterExp = "0=待处理,1=处理中,2=已完成,3=已关闭")
     private Integer status;
 
+    /** 微信用户openid */
+    @Excel(name = "微信用户openid")
+    private String openid;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -109,6 +113,16 @@ public class CustomerServiceTicket extends BaseEntity
         return status;
     }
 
+    public void setOpenid(String openid) 
+    {
+        this.openid = openid;
+    }
+
+    public String getOpenid() 
+    {
+        return openid;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -119,6 +133,7 @@ public class CustomerServiceTicket extends BaseEntity
             .append("consultType", getConsultType())
             .append("relatedOrders", getRelatedOrders())
             .append("status", getStatus())
+            .append("openid", getOpenid())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .toString();
