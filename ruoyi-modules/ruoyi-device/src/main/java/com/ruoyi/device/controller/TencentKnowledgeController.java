@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/knowledge")
@@ -27,9 +28,9 @@ public class TencentKnowledgeController {
         }
         
         try {
-            String result = knowledgeService.analyzeText(content);
+            String result = knowledgeService.analyzeTextStream(content).get();
             return AjaxResult.success(result);
-        } catch (Exception e) {
+        } catch (InterruptedException | ExecutionException e) {
             return AjaxResult.error(e.getMessage());
         }
     }
